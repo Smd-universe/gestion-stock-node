@@ -1,4 +1,4 @@
-const AUTH_API_URL = '/api/auth/login';
+const AUTH_API_URL = 'https://gestion-stock-node.onrender.com';
 
 const loginForm = document.getElementById('loginForm');
 const loginBtn = document.getElementById('loginBtn');
