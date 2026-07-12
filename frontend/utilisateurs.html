@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilisateurs - Stock Flow</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/gestion.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/logo.png" alt="Stock Flow Logo" class="sidebar-logo">
+                <h2>Stock Flow</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <i data-lucide="layout-dashboard"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="produits.html">
+                            <i data-lucide="package"></i>
+                            Produits
+                        </a>
+                    </li>
+                    <li>
+                        <a href="categories.html">
+                            <i data-lucide="folder"></i>
+                            Catégories
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ventes.html">
+                            <i data-lucide="shopping-cart"></i>
+                            Ventes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="achats.html">
+                            <i data-lucide="truck"></i>
+                            Achats
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mouvements.html">
+                            <i data-lucide="bar-chart"></i>
+                            Mouvements
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="utilisateurs.html">
+                            <i data-lucide="users"></i>
+                            Utilisateurs
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span id="userName">Utilisateur</span>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i data-lucide="log-out"></i>
+                    Déconnexion
+                </button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Gestion des Utilisateurs</h1>
+                <div class="header-actions">
+                    <button id="addUserBtn" class="btn-primary">
+                        <i data-lucide="plus"></i>
+                        Nouvel Utilisateur
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content-section">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Rôle</th>
+                                <th>Date de création</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="6" class="loading">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Ajout/Modification Utilisateur -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nouvel Utilisateur</h2>
+                <button class="modal-close" id="closeModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="userForm" class="modal-form">
+                <input type="hidden" id="userId">
+                <div class="form-group">
+                    <label for="nom">Nom *</label>
+                    <input type="text" id="nom" name="nom" placeholder="Ex: Jean Dupont" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" placeholder="jean@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="mot_de_passe">Mot de passe *</label>
+                    <input type="password" id="mot_de_passe" name="mot_de_passe" placeholder="••••••••" autocomplete="new-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Rôle *</label>
+                    <select id="role" name="role" required>
+                        <option value="">Sélectionner un rôle</option>
+                        <option value="admin">Administrateur</option>
+                        <option value="caissier">Caissier</option>
+                        <option value="utilisateur">Utilisateur</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelModal">Annuler</button>
+                    <button type="submit" class="btn-save">
+                        <i data-lucide="save"></i>
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/utilisateurs.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

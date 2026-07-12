@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Gestion de Stock ERP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/logo.png" alt="Stock Flow Logo" class="sidebar-logo">
+                <h2>Stock Flow</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="dashboard.html">
+                            <i data-lucide="layout-dashboard"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="produits.html">
+                            <i data-lucide="package"></i>
+                            Produits
+                        </a>
+                    </li>
+                    <li>
+                        <a href="categories.html">
+                            <i data-lucide="folder"></i>
+                            Catégories
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ventes.html">
+                            <i data-lucide="shopping-cart"></i>
+                            Ventes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="achats.html">
+                            <i data-lucide="truck"></i>
+                            Achats
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mouvements.html">
+                            <i data-lucide="bar-chart"></i>
+                            Mouvements
+                        </a>
+                    </li>
+                    <li id="usersMenuItem" style="display: none;">
+                        <a href="utilisateurs.html">
+                            <i data-lucide="users"></i>
+                            Utilisateurs
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span id="userName">Utilisateur</span>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i data-lucide="log-out"></i>
+                    Déconnexion
+                </button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Tableau de bord</h1>
+                <div class="header-actions">
+                    <span id="userRole" class="user-role">Rôle</span>
+                </div>
+            </header>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper">
+                        <i data-lucide="package"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Produits</h3>
+                        <p class="stat-value" id="totalProduits">0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper">
+                        <i data-lucide="alert-triangle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Alertes Stock</h3>
+                        <p class="stat-value" id="stockBas">0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper">
+                        <i data-lucide="trending-up"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Ventes</h3>
+                        <p class="stat-value" id="totalVentes">0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper">
+                        <i data-lucide="shopping-bag"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Prix Achat</h3>
+                        <p class="stat-value" id="totalPrixAchat">0 FCFA</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper">
+                        <i data-lucide="dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Chiffre d'Affaires</h3>
+                        <p class="stat-value" id="chiffreAffaires">0 FCFA</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper">
+                        <i data-lucide="bar-chart-2"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Marge Brute</h3>
+                        <p class="stat-value" id="margeBrute">0 FCFA</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper">
+                        <i data-lucide="wallet"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Bénéfice Net</h3>
+                        <p class="stat-value" id="beneficeNet">0 FCFA</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="welcome-message">
+                    <h2>Bienvenue sur votre Dashboard</h2>
+                    <p>Sélectionnez une option dans le menu pour commencer à gérer votre stock.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/dashboard.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

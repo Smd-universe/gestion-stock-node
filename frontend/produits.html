@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produits - Gestion de Stock ERP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/gestion.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/logo.png" alt="Stock Flow Logo" class="sidebar-logo">
+                <h2>Stock Flow</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <i data-lucide="layout-dashboard"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="produits.html">
+                            <i data-lucide="package"></i>
+                            Produits
+                        </a>
+                    </li>
+                    <li>
+                        <a href="categories.html">
+                            <i data-lucide="folder"></i>
+                            Catégories
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ventes.html">
+                            <i data-lucide="shopping-cart"></i>
+                            Ventes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="achats.html">
+                            <i data-lucide="truck"></i>
+                            Achats
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mouvements.html">
+                            <i data-lucide="bar-chart"></i>
+                            Mouvements
+                        </a>
+                    </li>
+                    <li id="usersMenuItem" style="display: none;">
+                        <a href="utilisateurs.html">
+                            <i data-lucide="users"></i>
+                            Utilisateurs
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span id="userName">Utilisateur</span>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i data-lucide="log-out"></i>
+                    Déconnexion
+                </button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Gestion des Produits</h1>
+                <div class="header-actions">
+                    <button id="exportProduitsBtn" class="btn-secondary">
+                        <i data-lucide="file-spreadsheet"></i>
+                        Exporter Stock
+                    </button>
+                    <button id="addProduitBtn" class="btn-primary">
+                        <i data-lucide="plus"></i>
+                        Nouveau Produit
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content-section">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Catégorie</th>
+                                <th>Prix</th>
+                                <th>Stock</th>
+                                <th>Stock Min</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="produitsTableBody">
+                            <tr>
+                                <td colspan="7" class="loading">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Ajout/Modification Produit -->
+    <div id="produitModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nouveau Produit</h2>
+                <button class="modal-close" id="closeModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="produitForm" class="modal-form">
+                <input type="hidden" id="produitId">
+                <div class="form-group">
+                    <label for="nom">Nom du produit *</label>
+                    <input type="text" id="nom" name="nom" placeholder="Ex: iPhone 15 Pro Max" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="3" placeholder="Description détaillée du produit..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="prix_unitaire">Prix Unitaire (FCFA) *</label>
+                    <input type="number" id="prix_unitaire" name="prix_unitaire" step="0.01" placeholder="0.00 FCFA" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quantite_stock">Quantité en Stock</label>
+                        <input type="number" id="quantite_stock" name="quantite_stock" value="0" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantite_min">Stock Minimum</label>
+                        <input type="number" id="quantite_min" name="quantite_min" value="0" placeholder="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="categorie_id">Catégorie</label>
+                    <select id="categorie_id" name="categorie_id">
+                        <option value="">Sélectionner une catégorie</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelModal">Annuler</button>
+                    <button type="submit" class="btn-save">
+                        <i data-lucide="save"></i>
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Modification Stock -->
+    <div id="stockModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Modifier le Stock</h2>
+                <button class="modal-close" id="closeStockModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="stockForm" class="modal-form">
+                <input type="hidden" id="stockProduitId">
+                <div class="form-group">
+                    <label>Produit</label>
+                    <input type="text" id="stockProduitNom" readonly placeholder="Nom du produit">
+                </div>
+                <div class="form-group">
+                    <label>Stock Actuel</label>
+                    <input type="text" id="stockActuel" readonly placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label for="stockType">Type de Mouvement</label>
+                    <select id="stockType" name="stockType" required>
+                        <option value="ajout">Ajout (Entrée)</option>
+                        <option value="retrait">Retrait (Sortie)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="stockQuantite">Quantité *</label>
+                    <input type="number" id="stockQuantite" name="stockQuantite" min="1" placeholder="Quantité à ajouter/retirer" required>
+                </div>
+                <div class="form-group">
+                    <label for="stockCommentaire">Commentaire</label>
+                    <textarea id="stockCommentaire" name="stockCommentaire" rows="2" placeholder="R motif du mouvement..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelStockModal">Annuler</button>
+                    <button type="submit" class="btn-save">
+                        <i data-lucide="check"></i>
+                        Valider
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/produits.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

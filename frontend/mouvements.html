@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouvements - Gestion de Stock ERP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/gestion.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/logo.png" alt="Stock Flow Logo" class="sidebar-logo">
+                <h2>Stock Flow</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <i data-lucide="layout-dashboard"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="produits.html">
+                            <i data-lucide="package"></i>
+                            Produits
+                        </a>
+                    </li>
+                    <li>
+                        <a href="categories.html">
+                            <i data-lucide="folder"></i>
+                            Catégories
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ventes.html">
+                            <i data-lucide="shopping-cart"></i>
+                            Ventes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="achats.html">
+                            <i data-lucide="truck"></i>
+                            Achats
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="mouvements.html">
+                            <i data-lucide="bar-chart"></i>
+                            Mouvements
+                        </a>
+                    </li>
+                    <li id="usersMenuItem" style="display: none;">
+                        <a href="utilisateurs.html">
+                            <i data-lucide="users"></i>
+                            Utilisateurs
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span id="userName">Utilisateur</span>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i data-lucide="log-out"></i>
+                    Déconnexion
+                </button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Mouvements de Stock</h1>
+                <div class="header-actions">
+                    <button id="addMouvementBtn" class="btn-primary">
+                        <i data-lucide="plus"></i>
+                        Nouveau Mouvement
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content-section">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Produit</th>
+                                <th>Type</th>
+                                <th>Quantité</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mouvementsTableBody">
+                            <tr>
+                                <td colspan="6" class="loading">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Nouveau Mouvement -->
+    <div id="mouvementModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nouveau Mouvement</h2>
+                <button class="modal-close" id="closeModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="mouvementForm" class="modal-form">
+                <div class="form-group">
+                    <label for="produit_id">Produit *</label>
+                    <select id="produit_id" name="produit_id" required>
+                        <option value="">Sélectionner un produit</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="type_mouvement">Type de Mouvement *</label>
+                    <select id="type_mouvement" name="type_mouvement" required>
+                        <option value="entree">Entrée (Stock +)</option>
+                        <option value="sortie">Sortie (Stock -)</option>
+                        <option value="transfert">Transfert</option>
+                        <option value="ajustement">Ajustement</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="quantite">Quantité *</label>
+                    <input type="number" id="quantite" name="quantite" min="1" placeholder="Quantité à déplacer" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="motif">Motif</label>
+                    <textarea id="motif" name="motif" rows="3" placeholder="Raison du mouvement..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelModal">Annuler</button>
+                    <button type="submit" class="btn-save">
+                        <i data-lucide="bar-chart"></i>
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/mouvements.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

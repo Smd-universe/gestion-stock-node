@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catégories - Gestion de Stock ERP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/gestion.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/logo.png" alt="Stock Flow Logo" class="sidebar-logo">
+                <h2>Stock Flow</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <i data-lucide="layout-dashboard"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="produits.html">
+                            <i data-lucide="package"></i>
+                            Produits
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="categories.html">
+                            <i data-lucide="folder"></i>
+                            Catégories
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ventes.html">
+                            <i data-lucide="shopping-cart"></i>
+                            Ventes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="achats.html">
+                            <i data-lucide="truck"></i>
+                            Achats
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mouvements.html">
+                            <i data-lucide="bar-chart"></i>
+                            Mouvements
+                        </a>
+                    </li>
+                    <li id="usersMenuItem" style="display: none;">
+                        <a href="utilisateurs.html">
+                            <i data-lucide="users"></i>
+                            Utilisateurs
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span id="userName">Utilisateur</span>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i data-lucide="log-out"></i>
+                    Déconnexion
+                </button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Gestion des Catégories</h1>
+                <div class="header-actions">
+                    <button id="addCategorieBtn" class="btn-primary">
+                        <i data-lucide="plus"></i>
+                        Nouvelle Catégorie
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content-section">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesTableBody">
+                            <tr>
+                                <td colspan="4" class="loading">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Ajout/Modification Catégorie -->
+    <div id="categorieModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nouvelle Catégorie</h2>
+                <button class="modal-close" id="closeModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="categorieForm" class="modal-form">
+                <input type="hidden" id="categorieId">
+                <div class="form-group">
+                    <label for="nom">Nom de la catégorie *</label>
+                    <input type="text" id="nom" name="nom" placeholder="Ex: Électronique" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="3" placeholder="Description de la catégorie..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelModal">Annuler</button>
+                    <button type="submit" class="btn-save">
+                        <i data-lucide="save"></i>
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/categories.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

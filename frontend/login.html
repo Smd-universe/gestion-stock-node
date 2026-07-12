@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Stock Flow</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i data-lucide="package"></i>
+                </div>
+                <h1>Stock Flow</h1>
+                <p>Connectez-vous à votre compte</p>
+            </div>
+            
+            <form id="loginForm" class="login-form" autocomplete="off">
+                <div class="form-group">
+                    <label for="email">Identifiant</label>
+                    <input 
+                        type="text" 
+                        id="email" 
+                        name="nom_utilisateur" 
+                        placeholder="admin" 
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="••••••••" 
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+                
+                <button type="submit" class="btn-login" id="loginBtn">
+                    Se connecter
+                </button>
+                
+                <div class="error-message" id="errorMessage"></div>
+            </form>
+            
+            <div class="login-footer">
+                <p>Compte admin : admin@gestion-stock.com / Admin123!</p>
+                <p>Compte caissier : caissier@gestion-stock.com / Caissier123!</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

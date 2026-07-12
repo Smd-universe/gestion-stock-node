@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventes - Gestion de Stock ERP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/gestion.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/logo.png" alt="Stock Flow Logo" class="sidebar-logo">
+                <h2>Stock Flow</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <i data-lucide="layout-dashboard"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="produits.html">
+                            <i data-lucide="package"></i>
+                            Produits
+                        </a>
+                    </li>
+                    <li>
+                        <a href="categories.html">
+                            <i data-lucide="folder"></i>
+                            Catégories
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="ventes.html">
+                            <i data-lucide="shopping-cart"></i>
+                            Ventes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="achats.html">
+                            <i data-lucide="truck"></i>
+                            Achats
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mouvements.html">
+                            <i data-lucide="bar-chart"></i>
+                            Mouvements
+                        </a>
+                    </li>
+                    <li id="usersMenuItem" style="display: none;">
+                        <a href="utilisateurs.html">
+                            <i data-lucide="users"></i>
+                            Utilisateurs
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span id="userName">Utilisateur</span>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i data-lucide="log-out"></i>
+                    Déconnexion
+                </button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Gestion des Ventes</h1>
+                <div class="header-actions">
+                    <button id="exportVentesBtn" class="btn-secondary">
+                        <i data-lucide="file-spreadsheet"></i>
+                        Exporter Excel
+                    </button>
+                    <button id="addVenteBtn" class="btn-primary">
+                        <i data-lucide="plus"></i>
+                        Nouvelle Vente
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content-section">
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="dateDebut">Du:</label>
+                        <input type="date" id="dateDebut" class="filter-input">
+                    </div>
+                    <div class="filter-group">
+                        <label for="dateFin">Au:</label>
+                        <input type="date" id="dateFin" class="filter-input">
+                    </div>
+                    <button id="resetFiltersBtn" class="btn-secondary btn-small">
+                        <i data-lucide="refresh-cw"></i>
+                        Réinitialiser
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Client</th>
+                                <th>Total</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ventesTableBody">
+                            <tr>
+                                <td colspan="6" class="loading">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Nouvelle Vente -->
+    <div id="venteModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Nouvelle Vente</h2>
+                <button class="modal-close" id="closeModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="venteForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="client_nom">Nom du Client</label>
+                        <input type="text" id="client_nom" name="client_nom" placeholder="Ex: Jean Dupont">
+                    </div>
+                    <div class="form-group">
+                        <label for="client_email">Email du Client</label>
+                        <input type="email" id="client_email" name="client_email" placeholder="client@email.com">
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Produits</h3>
+                    <div id="venteDetails">
+                        <div class="vente-detail-row">
+                            <select class="produit-select" required>
+                                <option value="">Sélectionner un produit</option>
+                            </select>
+                            <input type="number" class="detail-quantite" placeholder="Qté" min="1" required>
+                            <input type="number" class="detail-prix" placeholder="Prix FCFA" step="0.01" required>
+                            <button type="button" class="btn-remove-detail" disabled>
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" id="addDetailBtn" class="btn-secondary">
+                        <i data-lucide="plus"></i>
+                        Ajouter un produit
+                    </button>
+                </div>
+                
+                <div class="form-total">
+                    <label>Total: </label>
+                    <span id="totalVente">0.00 FCFA</span>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelModal">Annuler</button>
+                    <button type="submit" class="btn-save">
+                        <i data-lucide="shopping-cart"></i>
+                        Enregistrer la Vente
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Détails Vente -->
+    <div id="detailVenteModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Détails de la Vente</h2>
+                <button class="modal-close" id="closeDetailModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-info">
+                    <p><strong>ID:</strong> <span id="detailVenteId"></span></p>
+                    <p><strong>Date:</strong> <span id="detailVenteDate"></span></p>
+                    <p><strong>Client:</strong> <span id="detailVenteClient"></span></p>
+                    <p><strong>Total:</strong> <span id="detailVenteTotal"></span></p>
+                </div>
+                <h3>Produits vendus</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Prix Unitaire</th>
+                            <th>Sous-total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailVenteBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/ventes.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

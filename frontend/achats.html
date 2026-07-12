@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achats - Gestion de Stock ERP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/gestion.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/logo.png" alt="Stock Flow Logo" class="sidebar-logo">
+                <h2>Stock Flow</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <i data-lucide="layout-dashboard"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="produits.html">
+                            <i data-lucide="package"></i>
+                            Produits
+                        </a>
+                    </li>
+                    <li>
+                        <a href="categories.html">
+                            <i data-lucide="folder"></i>
+                            Catégories
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ventes.html">
+                            <i data-lucide="shopping-cart"></i>
+                            Ventes
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="achats.html">
+                            <i data-lucide="truck"></i>
+                            Achats
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mouvements.html">
+                            <i data-lucide="bar-chart"></i>
+                            Mouvements
+                        </a>
+                    </li>
+                    <li id="usersMenuItem" style="display: none;">
+                        <a href="utilisateurs.html">
+                            <i data-lucide="users"></i>
+                            Utilisateurs
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span id="userName">Utilisateur</span>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i data-lucide="log-out"></i>
+                    Déconnexion
+                </button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Gestion des Achats</h1>
+                <div class="header-actions">
+                    <button id="addAchatBtn" class="btn-primary">
+                        <i data-lucide="plus"></i>
+                        Nouvel Achat
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content-section">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Fournisseur</th>
+                                <th>Total</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="achatsTableBody">
+                            <tr>
+                                <td colspan="6" class="loading">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Nouvel Achat -->
+    <div id="achatModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Nouvel Achat</h2>
+                <button class="modal-close" id="closeModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="achatForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fournisseur_nom">Nom du Fournisseur *</label>
+                        <input type="text" id="fournisseur_nom" name="fournisseur_nom" placeholder="Ex: TechSupply Inc." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fournisseur_email">Email du Fournisseur</label>
+                        <input type="email" id="fournisseur_email" name="fournisseur_email" placeholder="fournisseur@email.com">
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Produits</h3>
+                    <div id="achatDetails">
+                        <div class="vente-detail-row">
+                            <select class="produit-select" required>
+                                <option value="">Sélectionner un produit</option>
+                            </select>
+                            <input type="number" class="detail-quantite" placeholder="Qté" min="1" required>
+                            <input type="number" class="detail-prix" placeholder="Prix Achat FCFA" step="0.01" required>
+                            <button type="button" class="btn-remove-detail" disabled>
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" id="addDetailBtn" class="btn-secondary">
+                        <i data-lucide="plus"></i>
+                        Ajouter un produit
+                    </button>
+                </div>
+                
+                <div class="form-total">
+                    <label>Total: </label>
+                    <span id="totalAchat">0.00 FCFA</span>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelModal">Annuler</button>
+                    <button type="submit" class="btn-save">
+                        <i data-lucide="truck"></i>
+                        Enregistrer l'Achat
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Détails Achat -->
+    <div id="detailAchatModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Détails de l'Achat</h2>
+                <button class="modal-close" id="closeDetailModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-info">
+                    <p><strong>ID:</strong> <span id="detailAchatId"></span></p>
+                    <p><strong>Date:</strong> <span id="detailAchatDate"></span></p>
+                    <p><strong>Fournisseur:</strong> <span id="detailAchatFournisseur"></span></p>
+                    <p><strong>Total:</strong> <span id="detailAchatTotal"></span></p>
+                </div>
+                <h3>Produits achetés</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Prix Unitaire</th>
+                            <th>Sous-total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailAchatBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/achats.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
