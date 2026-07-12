@@ -1,4 +1,4 @@
-const CATEGORIES_API_URL = '/api/categories';
+const CATEGORIES_API_URL = 'https://gestion-stock-node.onrender.com';
 
 // Récupérer le token JWT
 function getToken() {
