@@ -24,7 +24,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Servir les fichiers statiques du frontend
-app.use(express.static(path.join(__dirname, '../frontend')));
+const frontendPath = process.env.VERCEL 
+  ? path.join(__dirname, '../frontend')
+  : path.join(__dirname, '../frontend');
+app.use(express.static(frontendPath));
 
 // Routes
 app.get('/', (req, res) => {
